@@ -1,0 +1,21 @@
+{
+	"name": "yuanrenxue",
+	"version": "1.0.0",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://codeup.aliyun.com/689aaed19eda9d4e3ee4a14b/spider/yuanrenxue.git"
+	},
+	"author": "",
+	"license": "ISC",
+	"description": "",
+	"devDependencies": {
+		"@biomejs/biome": "2.2.2"
+	},
+	"engines": {
+		"node": ">=22"
+	}
+}
