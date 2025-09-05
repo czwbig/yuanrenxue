@@ -6,7 +6,7 @@
 ## 题目描述
 题目2：提取全部5页发布日热度的值，计算所有值的加和,并提交答案（动态 cookie）
 
-链接：[https://match.yuanrenxue.cn/match/1](https://match.yuanrenxue.cn/match/1)
+链接：[https://match.yuanrenxue.cn/match/2](https://match.yuanrenxue.cn/match/2)
 
 ## 题目分析
 打开题目链接，打开 F12 ，跟第一题一样，有防爬的 debugger 直接在 debugger 这行前面鼠标右键 `Never pause here`就可以了。
@@ -280,10 +280,6 @@ async function getMValue() {
 			child.kill();
 		});
 
-		child.stderr.on("data", (data) => {
-			reject(data.toString());
-		});
-
 		child.on("close", (code) => {
 			if (output) {
 				resolve(output.match(/mundefined=([a-f0-9]{32}\|\d+); path=\//)[1]);
@@ -294,9 +290,8 @@ async function getMValue() {
 	});
 }
 
-getMValue().then(console.log);
+getMValue().then(console.log).catch(console.error);
 module.exports = getMValue;
-
 ```
 
 运行结果 `0da02fa8569a0e436623d47b24aa3389|1756973015000`
@@ -311,52 +306,52 @@ module.exports = getMValue;
 const getMValue = require("./getMValue.js");
 
 async function getData(page = 1) {
-	const mValue = await getMValue();
-	// 这里的 sessionId 需要换成你自己的
-	// 可以通过浏览器开发者工具查看请求头中的 Cookie 获取
-	const sessionId = "l3u9wa8mh6ajlez9ivhjb6829l9ocslx";
-	const url = "https://match.yuanrenxue.cn/api/match/2";
-	const queryString = new URLSearchParams({
-		page: page,
-	}).toString();
+    const mValue = await getMValue();
+    // 这里的 sessionId 需要换成你自己的
+    // 可以通过浏览器开发者工具查看请求头中的 Cookie 获取
+    const sessionId = "l3u9wa8mh6ajlez9ivhjb6829l9ocslx";
+    const url = "https://match.yuanrenxue.cn/api/match/2";
+    const queryString = new URLSearchParams({
+        page: page,
+    }).toString();
 
-	const result = await fetch(`${url}?${queryString}`, {
-		headers: {
-			accept: "application/json, text/javascript, */*; q=0.01",
-			"accept-language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
-			"cache-control": "no-cache",
-			pragma: "no-cache",
-			priority: "u=0, i",
-			"sec-ch-ua":
-				'"Not;A=Brand";v="99", "Microsoft Edge";v="139", "Chromium";v="139"',
-			"sec-ch-ua-mobile": "?0",
-			"sec-ch-ua-platform": '"Windows"',
-			"sec-fetch-dest": "empty",
-			"sec-fetch-mode": "cors",
-			"sec-fetch-site": "same-origin",
-			"x-requested-with": "XMLHttpRequest",
-			cookie: `sessionid=${sessionId};m=${mValue};`,
-			Referer: "https://match.yuanrenxue.cn/match/1",
-		},
-		body: null,
-		method: "GET",
-	});
-	const resJson = await result.json();
-	console.debug("resJson:", resJson);
-	if (result.ok) {
-		return resJson.data.map((item) => item.value);
-	}
-	throw new Error(`请求失败，状态码：${result.status}`);
+    const result = await fetch(`${url}?${queryString}`, {
+        headers: {
+            accept: "application/json, text/javascript, */*; q=0.01",
+            "accept-language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
+            "cache-control": "no-cache",
+            pragma: "no-cache",
+            priority: "u=0, i",
+            "sec-ch-ua":
+                '"Not;A=Brand";v="99", "Microsoft Edge";v="139", "Chromium";v="139"',
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": '"Windows"',
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "same-origin",
+            "x-requested-with": "XMLHttpRequest",
+            cookie: `sessionid=${sessionId};m=${mValue};`,
+            Referer: "https://match.yuanrenxue.cn/match/1",
+        },
+        body: null,
+        method: "GET",
+    });
+    const resJson = await result.json();
+    console.debug("resJson:", resJson);
+    if (result.ok) {
+        return resJson.data.map((item) => item.value);
+    }
+    throw new Error(`请求失败，状态码：${result.status}`);
 }
 
 (async () => {
-	let prices = [];
-	for (let page = 1; page < 6; page++) {
-		const pagePrices = await getData(page);
-		prices = prices.concat(pagePrices);
-	}
-	const sum = prices.reduce((acc, cur) => acc + cur, 0);
-	console.log("sum:", sum);
+    let prices = [];
+    for (let page = 1; page < 6; page++) {
+        const pagePrices = await getData(page);
+        prices = prices.concat(pagePrices);
+    }
+    const sum = prices.reduce((acc, cur) => acc + cur, 0);
+    console.log("sum:", sum);
 })();
 
 ```
