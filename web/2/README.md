@@ -1,7 +1,7 @@
 ## 说明
 1. 文档中部分代码已省略，完整代码已存放于 git 仓库中 [https://github.com/czwbig/yuanrenxue](https://github.com/czwbig/yuanrenxue)
 2. 运行环境默认为 node:22
-3. 读者应已具备 web 基础，掌握 node es6 语言，能使用浏览器 Devtools 工具进行网站
+3. 读者应已具备 web 基础，掌握 node es6 语言，能使用浏览器 Devtools 工具进行网站分析
 
 ## 题目描述
 题目2：提取全部5页发布日热度的值，计算所有值的加和,并提交答案（动态 cookie）
